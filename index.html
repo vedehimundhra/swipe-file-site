@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A spin-and-recall drill deck of marketing, consumer psychology and digital strategy concepts.">
+<style>
+:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Swipe File</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%23D53A17'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+</head>
+<body>
+<style>
+:root{
+  --paper:#EDE7DA; --card:#F6F2E8; --sunk:#E3DCCB;
+  --ink:#17150F; --ink-2:#4A4538; --faint:#8A836F;
+  --rule:#D3CAB4; --rule-2:#BFB49A;
+  --hot:#D53A17; --hot-ink:#FFF6F2; --hot-soft:#F7DFD6;
+  --f-d:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-b:"Newsreader",Georgia,serif;
+  --f-m:"IBM Plex Mono","SF Mono",Menlo,monospace;
+  --pad:clamp(18px,4.5vw,40px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13120E; --card:#1C1A15; --sunk:#100F0C;
+  --ink:#EFEADC; --ink-2:#B5AE9B; --faint:#7E7765;
+  --rule:#2C291F; --rule-2:#3D392C;
+  --hot:#FF5833; --hot-ink:#1A0C07; --hot-soft:#38170E;
+}}
+:root[data-theme="dark"]{
+  --paper:#13120E; --card:#1C1A15; --sunk:#100F0C;
+  --ink:#EFEADC; --ink-2:#B5AE9B; --faint:#7E7765;
+  --rule:#2C291F; --rule-2:#3D392C;
+  --hot:#FF5833; --hot-ink:#1A0C07; --hot-soft:#38170E;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-b);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--rule) .5px,transparent .5px);
+  background-size:14px 14px;
+}
+.shell{min-height:100%;display:flex;flex-direction:column;
+  max-width:760px;margin:0 auto;padding-inline:var(--pad)}
+
+/* masthead */
+header{padding-block:clamp(20px,4vw,34px) 4px;text-align:center}
+.wordmark{font-family:var(--f-d);font-weight:800;font-size:clamp(26px,6vw,38px);
+  letter-spacing:-.035em;line-height:1;margin:0;
+  display:inline-flex;align-items:center;gap:.42em}
+.wordmark .sq{width:.52em;height:.52em;background:var(--hot);border-radius:2px;
+  display:inline-block;transform:rotate(-8deg)}
+.tagline{font-family:var(--f-m);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--faint);margin:9px 0 0}
+
+/* controls */
+.controls{display:flex;flex-direction:column;align-items:center;gap:11px;
+  padding-block:clamp(14px,3vw,22px)}
+.seg{display:inline-flex;background:var(--sunk);border:1px solid var(--rule);
+  border-radius:999px;padding:3px}
+.seg button{appearance:none;border:0;background:transparent;cursor:pointer;
+  font-family:var(--f-d);font-weight:700;font-size:13.5px;color:var(--ink-2);
+  padding:7px 15px;border-radius:999px;display:flex;align-items:center;gap:6px;
+  transition:background .18s,color .18s}
+.seg button[aria-checked="true"]{background:var(--hot);color:var(--hot-ink)}
+.seg button:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.mode-note{font-family:var(--f-b);font-style:italic;font-size:14.5px;
+  color:var(--ink-2);margin:0;text-align:center;max-width:36ch}
+.selwrap{position:relative;display:inline-block}
+select{appearance:none;font-family:var(--f-d);font-weight:700;font-size:13.5px;
+  color:var(--ink);background:var(--card);border:1px solid var(--rule-2);
+  border-radius:999px;padding:9px 38px 9px 17px;cursor:pointer;max-width:min(92vw,330px)}
+select:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.selwrap::after{content:"";position:absolute;right:16px;top:50%;width:7px;height:7px;
+  border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);
+  transform:translateY(-70%) rotate(45deg);pointer-events:none}
+
+/* stage */
+main{flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding-block:clamp(10px,3vw,24px);min-height:0}
+.eyebrow{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--hot);text-align:center;margin:0 0 12px;
+  min-height:1.2em}
+.headline{font-family:var(--f-d);font-weight:800;letter-spacing:-.04em;line-height:.96;
+  font-size:clamp(38px,11vw,78px);margin:0;text-align:center;text-wrap:balance}
+.hook{font-family:var(--f-b);font-style:italic;font-size:clamp(16px,2.6vw,20px);
+  color:var(--ink-2);text-align:center;margin:16px auto 0;max-width:44ch;text-wrap:balance}
+
+.panel{margin-top:clamp(20px,3.6vw,30px);background:var(--card);
+  border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.panel-hd{padding:13px 18px;border-bottom:1px solid var(--rule);
+  font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--faint);display:flex;justify-content:space-between;
+  gap:10px;align-items:center;flex-wrap:wrap}
+.panel-bd{padding:17px 18px 19px;font-size:16px;line-height:1.62}
+.panel-bd p{margin:0 0 11px} .panel-bd p:last-child{margin-bottom:0}
+.panel-bd b{font-weight:600}
+.reveal-btn{appearance:none;border:1px dashed var(--rule-2);background:transparent;
+  width:100%;padding:15px;cursor:pointer;font-family:var(--f-d);font-weight:700;
+  font-size:13.5px;color:var(--ink-2);border-radius:4px;margin-top:12px;
+  transition:border-color .18s,color .18s}
+.reveal-btn:hover{border-color:var(--hot);color:var(--hot)}
+.reveal-btn:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.kbd{font-family:var(--f-m);font-size:10px;border:1px solid var(--rule-2);
+  border-radius:3px;padding:1px 5px;color:var(--faint)}
+
+/* dock */
+.dock{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 62%,transparent);
+  padding-top:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid var(--rule-2);background:var(--card);color:var(--ink);
+  font-family:var(--f-d);font-weight:700;font-size:14.5px;padding:12px 22px;
+  border-radius:999px;cursor:pointer;transition:transform .12s,background .18s,border-color .18s}
+.btn:hover{border-color:var(--ink-2)} .btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.btn-primary{background:var(--hot);border-color:var(--hot);color:var(--hot-ink);
+  padding-inline:30px}
+.btn-primary:hover{border-color:var(--hot);filter:brightness(1.06)}
+.btn-icon{padding:12px 14px;line-height:1}
+.btn[disabled]{opacity:.42;cursor:default;transform:none}
+.timer-live{font-variant-numeric:tabular-nums;font-family:var(--f-m);font-weight:600}
+
+/* meta strip */
+.strip{display:flex;justify-content:center;gap:7px 20px;flex-wrap:wrap;
+  font-family:var(--f-m);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--faint);padding-bottom:12px;text-align:center}
+.strip b{color:var(--ink-2);font-weight:500}
+
+/* settings */
+dialog{border:1px solid var(--rule-2);border-radius:5px;background:var(--card);
+  color:var(--ink);padding:0;max-width:min(94vw,400px);width:100%}
+dialog::backdrop{background:rgba(10,9,6,.58)}
+.dlg-hd{padding:16px 20px;border-bottom:1px solid var(--rule);font-family:var(--f-d);
+  font-weight:800;font-size:17px;letter-spacing:-.02em}
+.dlg-bd{padding:18px 20px}
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.field-l{font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:block;margin-bottom:8px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{appearance:none;border:1px solid var(--rule-2);background:transparent;color:var(--ink-2);
+  font-family:var(--f-d);font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px;
+  cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--hot);border-color:var(--hot);color:var(--hot-ink)}
+.chip:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.dlg-ft{padding:14px 20px;border-top:1px solid var(--rule);display:flex;
+  justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.linky{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--f-m);
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  text-decoration:underline;text-underline-offset:3px;padding:4px}
+.linky:hover{color:var(--hot)}
+
+footer{text-align:center;padding-bottom:22px;font-family:var(--f-m);font-size:10.5px;
+  letter-spacing:.09em;color:var(--faint)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell">
+
+<header>
+  <h1 class="wordmark"><span class="sq" aria-hidden="true"></span>Swipe File</h1>
+  <p class="tagline">Marketing recall drills &middot; digital-first</p>
+</header>
+
+<div class="controls">
+  <div class="seg" role="radiogroup" aria-label="Practice mode">
+    <button type="button" role="radio" id="mQuick" aria-checked="true" data-mode="quick">⚡ Quick recall</button>
+    <button type="button" role="radio" id="mDeep" aria-checked="false" data-mode="deep">🔬 Deep dive</button>
+  </div>
+  <p class="mode-note" id="modeNote">Explain it out loud before you read the answer.</p>
+  <div class="selwrap">
+    <select id="cat" aria-label="Topic area"></select>
+  </div>
+</div>
+
+<main>
+  <p class="eyebrow" id="eyebrow">Press spin to start</p>
+  <h2 class="headline" id="headline">Swipe File</h2>
+  <p class="hook" id="hook">A deck of ideas from consumer psychology, brand strategy, paid media and growth. Draw one. Explain it. Check yourself.</p>
+
+  <div id="promptPanel" hidden>
+    <div class="panel">
+      <div class="panel-hd"><span id="promptLabel">Your turn</span><span class="kbd">R to reveal</span></div>
+      <div class="panel-bd"><p id="promptText"></p></div>
+    </div>
+    <button class="reveal-btn" id="revealBtn" type="button">Reveal the brief</button>
+  </div>
+
+  <div class="panel" id="briefPanel" hidden>
+    <div class="panel-hd"><span>The brief</span><span id="briefTag"></span></div>
+    <div class="panel-bd" id="briefText"></div>
+  </div>
+</main>
+
+<div class="dock">
+  <button class="btn btn-primary" id="spin" type="button">Spin</button>
+  <button class="btn" id="timer" type="button" disabled>Start 60s</button>
+  <button class="btn btn-icon" id="openSettings" type="button" aria-label="Settings">⚙</button>
+</div>
+
+<p class="strip">
+  <span>Drawn <b id="statSeen">0</b> of <b id="statTotal">72</b></span>
+  <span><span class="kbd">space</span> spin</span>
+  <span><span class="kbd">R</span> reveal</span>
+</p>
+
+<footer>Built for studying, not scrolling.</footer>
+</div>
+
+<dialog id="settings">
+  <div class="dlg-hd">Settings</div>
+  <div class="dlg-bd">
+    <div class="field">
+      <span class="field-l">Timer length</span>
+      <div class="chips" id="timerChips">
+        <button class="chip" type="button" data-s="30">30s</button>
+        <button class="chip" type="button" data-s="60" aria-pressed="true">60s</button>
+        <button class="chip" type="button" data-s="90">90s</button>
+        <button class="chip" type="button" data-s="120">2 min</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field-l">Theme</span>
+      <div class="chips" id="themeChips">
+        <button class="chip" type="button" data-t="system" aria-pressed="true">System</button>
+        <button class="chip" type="button" data-t="light">Paper</button>
+        <button class="chip" type="button" data-t="dark">Ink</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field-l">Deck</span>
+      <div class="chips">
+        <button class="chip" type="button" id="resetSeen">Reshuffle all 72</button>
+      </div>
+    </div>
+  </div>
+  <div class="dlg-ft">
+    <button class="linky" id="closeSettings" type="button">Close</button>
+    <span style="font-family:var(--f-m);font-size:10.5px;color:var(--faint)">Settings save on this device</span>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+
+var CATS={
+  psych:"🧠 Consumer psychology", brand:"◇ Brand & positioning", paid:"◎ Paid media",
+  growth:"↗ Growth & retention", copy:"✎ Copy & creative", price:"₹ Pricing & offers",
+  data:"▦ Data & attribution", story:"★ Campaigns & stories"
+};
+
+var D=[
+/* ---------- consumer psychology ---------- */
+{c:"psych",t:"Anchoring",h:"The first number they see rewrites every number after it.",
+ p:"Explain how anchoring works, and name three places it is deliberately built into an ecommerce page.",
+ b:"<p>People judge value relative to the first figure they encounter, not in absolute terms. The anchor doesn't even have to be relevant to bias the estimate.</p><p><b>Digital form:</b> the struck-through 'was' price, the premium tier placed leftmost, a 'typical spend' figure in a calculator, the highest-priced item shown first in a sorted grid.</p><p><b>Watch for:</b> anchors that are obviously fake erode trust. Regulators in several markets now police reference pricing.</p>"},
+{c:"psych",t:"Loss Aversion",h:"Losing ₹500 hurts about twice as much as winning ₹500 feels good.",
+ p:"Why does 'don't lose your progress' usually outperform 'gain a reward'? Where would you apply it in a checkout flow?",
+ b:"<p>Kahneman and Tversky found losses weigh roughly 2x equivalent gains. Framing an identical outcome as avoiding a loss shifts behaviour.</p><p><b>Digital form:</b> 'Your cart expires in 10 minutes', trial-ending sequences, 'you'll lose your streak', downgrade flows listing what the user gives up.</p><p><b>Honest version:</b> remind people of value they genuinely built. Manufactured loss reads as manipulation and raises churn later.</p>"},
+{c:"psych",t:"Social Proof",h:"When unsure, people copy people who look like them.",
+ p:"Rank these by persuasive power and justify it: star rating, review count, named testimonial, UGC video, 'X bought today'.",
+ b:"<p>Uncertainty raises reliance on others' behaviour. Similarity amplifies it — proof from a peer beats proof from a celebrity for most considered purchases.</p><p><b>Digital form:</b> review volume often outperforms review score; a 4.3 with 2,000 reviews converts better than a 5.0 with 11.</p><p><b>Mechanism note:</b> specificity carries the weight. 'Used by 40,000 bakers' beats 'loved by thousands'.</p>"},
+{c:"psych",t:"Scarcity",h:"Supply limits raise desire — until the audience learns the limit is fake.",
+ p:"Distinguish real scarcity from manufactured urgency. What does a permanent countdown timer do to a brand over 12 months?",
+ b:"<p>Perceived limited availability increases valuation and accelerates decisions. Time scarcity and quantity scarcity work differently: quantity implies demand, time implies a deadline.</p><p><b>Digital form:</b> low-stock labels, limited drops, cart timers, waitlists.</p><p><b>Decay:</b> repeat visitors notice a timer that resets. Scarcity is a non-renewable trust resource — spend it on genuinely finite things.</p>"},
+{c:"psych",t:"The Decoy Effect",h:"Add a bad option and a good option starts to look obvious.",
+ p:"Design a three-tier pricing page using a decoy. Which tier should it make attractive, and why does the decoy work?",
+ b:"<p>Asymmetric dominance: introducing a third option that is clearly worse than one existing option but not the other pushes choice toward the dominating one.</p><p><b>The classic:</b> The Economist offered web-only at $59, print-only at $125, and print+web at $125. Almost nobody chose print-only — but its presence moved 84% to the bundle, up from 32%.</p>"},
+{c:"psych",t:"Endowment Effect",h:"The moment it feels like theirs, it is worth more.",
+ p:"Name four digital mechanics that create a sense of ownership before any money changes hands.",
+ b:"<p>People value things more highly once they possess them, or merely feel they do. Imagined ownership is enough to trigger it.</p><p><b>Digital form:</b> free trials with real data in them, virtual try-on, 'your plan' / 'your dashboard' language, saved configurations, wishlists, generous free tiers.</p><p><b>Why trials convert:</b> cancelling now registers as a loss, not a declined purchase.</p>"},
+{c:"psych",t:"Peak-End Rule",h:"An experience is remembered by its best moment and its last one.",
+ p:"Map a D2C purchase journey. Which moment is the peak, which is the end, and which is over-invested in?",
+ b:"<p>Kahneman: retrospective judgement of an experience weights the emotional peak and the ending, largely ignoring duration.</p><p><b>Digital form:</b> most brands over-invest in the ad and under-invest in the order confirmation, the unboxing, and the cancellation flow — which is the <i>end</i> and therefore disproportionately remembered.</p><p><b>Cheap win:</b> a well-written shipping email outperforms a more expensive landing page for repeat rate.</p>"},
+{c:"psych",t:"The Zeigarnik Effect",h:"Unfinished things keep knocking.",
+ p:"Why do progress bars increase completion? Where could you add one that doesn't exist today?",
+ b:"<p>Incomplete tasks occupy memory more persistently than completed ones. Visible incompleteness generates its own pressure to resolve.</p><p><b>Digital form:</b> 'profile 60% complete', onboarding checklists, multi-step forms showing step 2 of 4, abandoned-cart reminders.</p><p><b>Edge:</b> showing partial progress on arrival (e.g. starting at 20%) exploits this and the goal-gradient effect together.</p>"},
+{c:"psych",t:"Reciprocity",h:"Give first, and the debt is felt before it is reasoned about.",
+ p:"What separates a lead magnet that builds obligation from one that feels like a toll gate?",
+ b:"<p>Receiving something triggers a felt obligation to return the favour, often disproportionate to the gift's value.</p><p><b>Digital form:</b> genuinely useful free tools, open-sourced calculators, teardowns, ungated research.</p><p><b>The failure mode:</b> gating thin content behind a form isn't a gift, it's a transaction — and it is priced as one.</p>"},
+{c:"psych",t:"Commitment & Consistency",h:"A small yes makes the next yes cheaper.",
+ p:"Why can splitting one long form into four short steps raise completion despite adding clicks?",
+ b:"<p>People strive to act consistently with prior commitments, especially public or effortful ones.</p><p><b>Digital form:</b> micro-conversions before the ask — a quiz, a size finder, a saved item. Each one is a small commitment that makes the purchase consistent with established behaviour.</p><p><b>Counter-intuitive:</b> adding friction early can raise conversion if the friction generates commitment.</p>"},
+{c:"psych",t:"Hyperbolic Discounting",h:"Tomorrow's cost barely registers against today's reward.",
+ p:"Explain why BNPL lifts AOV. What is the long-term cost to a brand that leans on it?",
+ b:"<p>People disproportionately prefer immediate rewards, discounting future costs steeply and inconsistently.</p><p><b>Digital form:</b> buy-now-pay-later, 'start free, billed in 30 days', annual plans sold as a monthly figure.</p><p><b>Trade-off:</b> it raises order value and acquisition, but inflates refund and dispute rates in categories with buyer's remorse.</p>"},
+{c:"psych",t:"Choice Overload",h:"More options, more hesitation, fewer purchases.",
+ p:"A category page shows 48 SKUs with no filters. Give three interventions in priority order.",
+ b:"<p>Iyengar and Lepper's jam study: a 24-flavour display drew more attention than a 6-flavour one, but the smaller display converted roughly ten times better.</p><p><b>Digital form:</b> curated edits, 'best for…' routing, quizzes, default recommendations, progressive filtering.</p><p><b>Nuance:</b> expertise moderates it. Experts tolerate more options; novices need fewer and clearer defaults.</p>"},
+{c:"psych",t:"The IKEA Effect",h:"People overvalue what they helped build.",
+ p:"Where can you add effort to a purchase journey that increases attachment rather than friction?",
+ b:"<p>Labour invested in an object increases the owner's valuation of it, independent of quality.</p><p><b>Digital form:</b> product configurators, personalised onboarding, custom engraving, build-your-own bundles, playlists and saved collections.</p><p><b>Line to watch:</b> effort must feel like authorship, not admin. Choosing a monogram is authorship; retyping an address is admin.</p>"},
+{c:"psych",t:"Von Restorff Effect",h:"The one that doesn't match is the one that is remembered.",
+ p:"Everything in the feed is beige minimalism. What does that imply for your creative?",
+ b:"<p>An item that stands out from its context is disproportionately recalled — the isolation effect.</p><p><b>Digital form:</b> the single contrasting CTA on a muted page; creative built to break the aesthetic convention of its placement rather than to match it.</p><p><b>Category application:</b> when every competitor adopts the same visual language, deviation becomes the cheapest available distinctiveness.</p>"},
+{c:"psych",t:"Framing",h:"90% fat-free and 10% fat are the same meat.",
+ p:"Reframe three negatives as positives without changing the underlying fact: a 14-day return window, a ₹99 delivery fee, a 3-week lead time.",
+ b:"<p>Logically equivalent descriptions produce different choices depending on whether they emphasise gains or losses.</p><p><b>Digital form:</b> '₹99 delivery' versus 'free delivery over ₹999'; '2 left' versus '98% sold'; 'cancel anytime' versus 'no lock-in'.</p><p><b>Classic finding:</b> consumers rated beef labelled 75% lean as better tasting than the identical beef labelled 25% fat.</p>"},
+{c:"psych",t:"Mere Exposure",h:"Familiar things feel safer, then feel better.",
+ p:"How does this justify brand spend that produces no measurable click? Where does it break down?",
+ b:"<p>Repeated exposure to a stimulus increases liking, even without conscious recognition of the exposure.</p><p><b>Digital form:</b> the reason frequency has value beyond the click, and why retargeting works on people who never engaged with the first ad.</p><p><b>Where it breaks:</b> wear-out. Past a threshold, repetition converts liking into irritation — faster for interruptive formats than for ambient ones.</p>"},
+{c:"psych",t:"Default Bias",h:"Most people take whatever was already selected.",
+ p:"List every default in your checkout. Which were chosen deliberately, and which are accidents of the template?",
+ b:"<p>People disproportionately stick with pre-selected options, through inertia, implied endorsement, and loss aversion about changing.</p><p><b>Famous case:</b> European organ-donation rates differ by 60+ points between opt-in and opt-out countries with otherwise similar attitudes.</p><p><b>Digital form:</b> default shipping speed, default quantity, default subscription frequency, pre-ticked add-ons. The last is now illegal in several jurisdictions.</p>"},
+{c:"psych",t:"Goal Gradient",h:"Effort accelerates as the finish line gets closer.",
+ p:"Why does a 10-stamp card with 2 stamps pre-filled beat an 8-stamp empty card, despite identical work remaining?",
+ b:"<p>Motivation increases with proximity to a goal. Perceived progress matters more than actual remaining effort.</p><p><b>Field evidence:</b> Nunes and Drèze found the pre-stamped card completed faster and more often, despite requiring the same eight purchases.</p><p><b>Digital form:</b> loyalty tiers showing 'you're 340 points away', free-shipping progress bars in the cart, onboarding that starts at 20%.</p>"},
+{c:"psych",t:"Cognitive Fluency",h:"Easy to read gets mistaken for true.",
+ p:"Name three design choices that make a claim feel more credible without changing the claim.",
+ b:"<p>Information that is easy to process is judged more truthful, more familiar and less risky. Processing ease is misattributed to the content.</p><p><b>Digital form:</b> legible type, high contrast, short sentences, simple domain names, rhyme. 'Woes unite foes' is judged more accurate than 'woes unite enemies'.</p><p><b>Inverse use:</b> disfluency slows people down — useful on a confirmation step where you want deliberation.</p>"},
+{c:"psych",t:"Hick's Law",h:"Every extra option adds time to the decision.",
+ p:"Where in a mobile funnel is decision time most expensive, and how do you compress it?",
+ b:"<p>Decision time rises logarithmically with the number of choices. It governs navigation, menus and CTA density.</p><p><b>Digital form:</b> one primary action per screen; collapsed nav on mobile; payment methods ordered by likelihood rather than alphabetically.</p><p><b>Caveat:</b> it applies to equivalent choices. Well-categorised options are scanned, not evaluated one by one, so structure beats subtraction.</p>"},
+{c:"psych",t:"Sunk Cost Fallacy",h:"Having invested, people keep going to justify the investment.",
+ p:"Where does this help retention honestly, and where does it become a dark pattern?",
+ b:"<p>Prior irrecoverable investment irrationally influences continued commitment.</p><p><b>Digital form:</b> accumulated data, uploaded libraries, configured workspaces, loyalty balances — all raise switching cost psychologically as well as practically.</p><p><b>The dark version:</b> making prior investment hard to export so the feeling of loss does the retaining. Increasingly regulated.</p>"},
+{c:"psych",t:"Authority Bias",h:"The white coat does a lot of unexamined work.",
+ p:"Your category has no credible institutional authority. How do you manufacture legitimate credibility instead?",
+ b:"<p>People defer to perceived expertise and institutional signals, often substituting the signal for the evidence.</p><p><b>Digital form:</b> certifications, 'as featured in' logos, clinical language, expert-led creator content, published methodology.</p><p><b>Legitimate substitute:</b> radical transparency. Publishing your actual data, sourcing or testing creates authority that doesn't borrow it.</p>"},
+
+/* ---------- brand & positioning ---------- */
+{c:"brand",t:"Mental Availability",h:"Being thought of first matters more than being preferred.",
+ p:"Define mental availability and explain why it argues against narrow targeting.",
+ b:"<p>Byron Sharp's central claim: brands grow by being easy to think of in a buying situation, and easy to buy. Attitudes follow purchase more than they precede it.</p><p><b>Implication:</b> reach broadly and consistently rather than persuading a narrow segment deeply.</p><p><b>Digital tension:</b> platforms optimise for short-term response, which systematically underfunds the mental availability that makes response cheap later.</p>"},
+{c:"brand",t:"Distinctive Brand Assets",h:"Assets you own beat messages you rent.",
+ p:"List five non-logo assets a brand can own. Which does your client actually own, and which do they merely use?",
+ b:"<p>Colours, shapes, characters, sounds, typefaces and phrases that trigger brand recall without the name present. Measured on fame (who links it to you) and uniqueness (who links it only to you).</p><p><b>Examples:</b> the Cadbury purple, the Intel chime, the Nike swoosh, Mailchimp's Freddie, the Tiffany blue.</p><p><b>Discipline:</b> assets only accrue through repetition. Rebranding every 18 months destroys the compounding.</p>"},
+{c:"brand",t:"Category Entry Points",h:"Buyers don't think in categories. They think in situations.",
+ p:"Write six category entry points for a mid-market cake brand. Which is most under-served?",
+ b:"<p>The cues that trigger a purchase occasion — when, where, with whom, why. Brands grow by linking to more of them.</p><p><b>Example:</b> a bakery can own 'birthday', but also 'office farewell', 'apology', 'house guest arriving', 'Sunday indulgence', 'last-minute gift'. Each is a distinct demand moment with distinct creative.</p><p><b>Why it beats personas:</b> the same person buys differently in different situations.</p>"},
+{c:"brand",t:"The 60/40 Rule",h:"Roughly 60% brand, 40% activation — over time, not every week.",
+ p:"A client wants 100% of budget on performance. Make the case against in two minutes, with the mechanism.",
+ b:"<p>Binet and Field's analysis of IPA effectiveness cases found long-term growth optimised near a 60:40 split between brand building and sales activation, varying by category.</p><p><b>Mechanism:</b> brand works slowly on many people and lowers future acquisition cost; activation works quickly on few and decays within weeks.</p><p><b>Symptom of imbalance:</b> CAC rising year on year while ROAS looks fine — the funnel is being harvested, not refilled.</p>"},
+{c:"brand",t:"Double Jeopardy",h:"Small brands get punished twice.",
+ p:"Why do small brands have both fewer buyers and lower loyalty? What does that imply about loyalty programmes?",
+ b:"<p>An empirical law: brands with lower market share have proportionally fewer buyers <i>and</i> those buyers are slightly less loyal. Both follow from penetration.</p><p><b>Implication:</b> loyalty is largely a consequence of size, not a route to it. Growth comes mostly from penetration — new and light buyers — not from deepening existing relationships.</p><p><b>Practical:</b> budget skewed to retention in a small brand is usually mis-allocated.</p>"},
+{c:"brand",t:"Positioning",h:"A position is a space in a mind, not a line in a deck.",
+ p:"Write a positioning statement for a product you know, then delete every word a competitor could also claim.",
+ b:"<p>Ries and Trout: positioning is what you do to the prospect's mind — locating the brand against existing references rather than describing it in isolation.</p><p><b>Test:</b> if the opposite of your positioning statement is absurd ('we value quality'), it isn't a position. A real one has a credible competitor on the other side.</p><p><b>Digital form:</b> the first 40 characters of your meta title and the first 3 seconds of your video are your positioning, whatever the deck says.</p>"},
+{c:"brand",t:"Share of Voice",h:"Spend above your share, grow. Spend below it, shrink.",
+ p:"Explain ESOV. What does it predict for a brand cutting budget in a downturn while competitors hold?",
+ b:"<p>Excess Share of Voice: when a brand's share of category advertising exceeds its market share, it tends to gain share — roughly 0.5 points of growth per 10 points of ESOV, averaged across categories.</p><p><b>Downturn logic:</b> if competitors cut, the cost of ESOV falls. Holding spend buys more excess voice than the same money bought a year earlier.</p>"},
+{c:"brand",t:"Category Design",h:"Winning a category you created beats placing in one you didn't.",
+ p:"When is creating a new category a strategic masterstroke, and when is it an expensive way to be misunderstood?",
+ b:"<p>Rather than competing within an existing frame, define a new one and become its reference. Salesforce with 'cloud CRM', Red Bull with 'energy drink'.</p><p><b>Cost:</b> you fund the education of the entire market, and competitors enter on your evidence.</p><p><b>Precondition:</b> a real, nameable problem that existing categories handle badly. Without it you have a tagline, not a category.</p>"},
+{c:"brand",t:"Brand Codes vs Logo",h:"If you must show the logo to be recognised, you have no codes.",
+ p:"Take the logo off three of your client's ads. Is the brand still identifiable? What's doing the work?",
+ b:"<p>Codes are the consistent, recognisable system — composition, colour, tone, pacing, typography, recurring device — that signals the brand before the name is read.</p><p><b>Digital stakes:</b> in a feed, most impressions are sub-second and the logo may never be seen. Codes are what survive a scroll.</p><p><b>Test:</b> the 'squint test' and the 'logo removal test' are both cheap and both uncomfortable.</p>"},
+
+/* ---------- paid media ---------- */
+{c:"paid",t:"ROAS vs MER vs Incrementality",h:"Three numbers, three different questions.",
+ p:"Define each. A campaign shows 6x ROAS while MER is flat. What is happening?",
+ b:"<p><b>ROAS</b> is platform-attributed revenue over platform spend — self-reported and inflated by claimed credit. <b>MER</b> is total revenue over total marketing spend — blunt but honest. <b>Incrementality</b> is revenue that would not have occurred without the spend.</p><p><b>The scenario:</b> flat MER with rising ROAS almost always means the platform is claiming credit for demand that already existed — typically brand-term search or retargeting warm users.</p>"},
+{c:"paid",t:"Creative Is the Targeting",h:"The algorithm finds the audience. The creative decides which one.",
+ p:"Why did detailed interest targeting lose most of its value, and what replaced it?",
+ b:"<p>As delivery systems improved and signal loss narrowed manual options, broad targeting plus strong creative began outperforming narrow segments. The creative itself now selects the audience by self-identification.</p><p><b>Practical shift:</b> test variation in message, format and hook rather than in audience definition. The number of distinct creative concepts in-market became the main lever on performance.</p>"},
+{c:"paid",t:"Hook Rate",h:"If they don't stop, nothing else in the ad matters.",
+ p:"Define hook rate and hold rate. A video has 42% hook and 4% hold — diagnose it.",
+ b:"<p><b>Hook rate</b> = 3-second views / impressions. <b>Hold rate</b> = thruplays / impressions. Hook measures the stop; hold measures the story.</p><p><b>The diagnosis:</b> strong hook, collapsed hold means the opening wrote a cheque the next five seconds didn't honour — a pattern-interrupt unconnected to the message. Usually fixed by making seconds 3–8 pay off the promise of seconds 0–3.</p>"},
+{c:"paid",t:"Frequency & Saturation",h:"Every audience has a floor you will eventually hit.",
+ p:"Frequency has climbed from 1.8 to 6.4 over six weeks and CPA is up 40%. What do you do, and in what order?",
+ b:"<p>Repeated exposure to a finite audience produces wear-out: declining response at rising cost as the addressable pool is exhausted.</p><p><b>Order of operations:</b> new creative first (cheapest, fastest), then audience expansion, then offer change, then budget reduction. Cutting budget first masks the problem without solving it.</p><p><b>Diagnostic:</b> if new creative restores performance at the same frequency, it was creative fatigue. If it doesn't, the audience is genuinely saturated.</p>"},
+{c:"paid",t:"The Learning Phase",h:"Edit the campaign, restart the education.",
+ p:"Why do frequent budget changes hurt performance? What counts as a significant edit?",
+ b:"<p>Delivery systems need a volume of conversion events to model who to show ads to. Significant edits reset that modelling.</p><p><b>Triggers a reset:</b> large budget changes, bid strategy changes, creative overhauls, audience edits, optimisation event changes.</p><p><b>Implication:</b> campaigns with too few weekly conversions never exit learning, which is an argument for consolidating ad sets rather than proliferating them.</p>"},
+{c:"paid",t:"Server-Side Tracking",h:"The browser is the least reliable part of the stack.",
+ p:"Explain the Conversions API in one minute to a sceptical client. What does it actually recover?",
+ b:"<p>Events are sent from your server to the platform rather than from the user's browser, bypassing ad blockers, tracking prevention and in-app browser failures. Deduplicated against browser events by a shared event ID.</p><p><b>Recovers:</b> typically 10–25% of conversions in mobile-heavy markets.</p><p><b>The bigger gain:</b> it is optimisation signal, not just reporting. More complete conversion data changes what the algorithm buys.</p>"},
+{c:"paid",t:"Attribution Windows",h:"Change the window, change the story. Nothing else moved.",
+ p:"7-day click/1-day view versus 1-day click. Which campaigns look better under each, and why is that dangerous?",
+ b:"<p>The lookback period determines which conversions a platform claims. Longer windows and view-through inclusion inflate reported performance, especially for retargeting and broad awareness.</p><p><b>The danger:</b> comparing channels on different windows, or comparing periods across a window change, produces confident conclusions about nothing.</p><p><b>Discipline:</b> fix the window, document it, and judge channels on incrementality rather than claimed credit.</p>"},
+{c:"paid",t:"LTV:CAC",h:"One number that stops most arguments about whether to spend more.",
+ p:"A brand has 3:1 LTV:CAC and refuses to scale spend. What are they right to worry about?",
+ b:"<p>Lifetime value over customer acquisition cost. The rough convention is 3:1 as healthy, though it is category-dependent.</p><p><b>What they're right about:</b> CAC rises with scale. The marginal customer costs more than the average one, so a 3:1 blended ratio can hide a marginal ratio near 1:1.</p><p><b>Better question:</b> what is the payback period? A 3:1 ratio with 14-month payback kills cash flow in a way the ratio alone doesn't show.</p>"},
+{c:"paid",t:"Geo Holdout Tests",h:"The only clean way to know if your ads did anything.",
+ p:"Design a geo holdout for a national D2C brand. What are the three ways it goes wrong?",
+ b:"<p>Switch spend off in matched regions, keep it on elsewhere, and compare total sales. It measures incrementality directly rather than inferring it from attribution.</p><p><b>Failure modes:</b> regions not genuinely comparable; test run too short to clear the consideration lag; spillover between adjacent regions or via national media.</p><p><b>Why it's worth it:</b> it is the only method that survives signal loss, because it never depends on tracking individuals.</p>"},
+
+/* ---------- growth ---------- */
+{c:"growth",t:"Loops, Not Funnels",h:"A funnel ends. A loop feeds itself.",
+ p:"Convert a standard acquisition funnel into a loop. What is the output that becomes the next input?",
+ b:"<p>Funnels are linear and require constant top-of-funnel spend. Loops reinvest an output — content, invitations, data, inventory — back into acquisition.</p><p><b>Examples:</b> user-generated content indexed by search; referrals generating new users who refer; marketplace supply attracting demand attracting supply.</p><p><b>Test:</b> if doubling your users doesn't make acquisition cheaper, you have a funnel.</p>"},
+{c:"growth",t:"Retention Curve Flattening",h:"If the curve hits zero, nothing else you do matters.",
+ p:"Two products: one retains 20% flat after week 8, one declines to 5% by week 20. Which can scale, and why?",
+ b:"<p>Cohort retention plotted over time either flattens at a positive asymptote or decays to zero. A flattening curve means a stable base that accumulates with every cohort.</p><p><b>The answer:</b> the flat-at-20% product compounds; every cohort adds permanently. The decaying one is a leaking bucket where growth requires permanently rising spend.</p><p><b>Priority:</b> flatten the curve before scaling acquisition. Spending into a decaying curve buys a bigger leak.</p>"},
+{c:"growth",t:"The Hooked Model",h:"Trigger, action, variable reward, investment — then repeat.",
+ p:"Apply all four stages to a non-social product, like a grocery app.",
+ b:"<p>Nir Eyal's loop. <b>Trigger</b> (external then internal), <b>Action</b> (simplest behaviour in anticipation of reward), <b>Variable reward</b> (unpredictability sustains engagement), <b>Investment</b> (user puts something in that improves the next cycle).</p><p><b>Grocery example:</b> delivery notification → open app → variable offers and restock reminders → saved lists and preferences that make next week faster.</p><p><b>Ethics:</b> Eyal's own test is whether the user would endorse the habit on reflection.</p>"},
+{c:"growth",t:"The Aha Moment",h:"The one action that predicts whether they stay.",
+ p:"How would you find the aha moment for a product with no obvious social graph?",
+ b:"<p>The specific early action correlated with long-term retention. Facebook's '7 friends in 10 days' is the canonical example; Slack used '2,000 messages sent'.</p><p><b>How to find it:</b> compare retained and churned cohorts across early behaviours, then test whether driving the behaviour causes retention rather than merely correlating with it.</p><p><b>Common error:</b> optimising a correlate. Engaged users do many things; only some of them cause the engagement.</p>"},
+{c:"growth",t:"Referral Mechanics",h:"Two-sided incentives beat one-sided ones, almost always.",
+ p:"Why did Dropbox's referral work where most referral programmes don't?",
+ b:"<p>Dropbox gave free storage to both referrer and referee, raising signups roughly 60%. Three conditions made it work.</p><p><b>One:</b> the reward was the product itself, so cost was marginal and the reward deepened usage. <b>Two:</b> it solved a problem the user already had. <b>Three:</b> sharing was natural to the use case, not bolted on.</p><p><b>Why most fail:</b> cash rewards attract people who want cash, not the product — and churn accordingly.</p>"},
+{c:"growth",t:"Negative Churn",h:"Existing customers grow faster than departing ones shrink you.",
+ p:"How does a business achieve net revenue retention above 100%? Name three expansion mechanics.",
+ b:"<p>When expansion revenue from existing customers exceeds revenue lost to churn and downgrades, the base grows without a single new customer.</p><p><b>Mechanics:</b> usage-based pricing that scales with the customer's success; seat expansion; tier upgrades; cross-sell into adjacent needs.</p><p><b>Why investors care:</b> NRR above 110% means growth compounds off an installed base, materially reducing dependence on acquisition cost.</p>"},
+{c:"growth",t:"RFM Segmentation",h:"Recency, frequency, monetary — old, unglamorous, still unbeaten.",
+ p:"Build four lifecycle segments from RFM and name the message each one gets.",
+ b:"<p>Rank customers on how recently they bought, how often, and how much. The three together outperform most demographic segmentation for lifecycle marketing.</p><p><b>Segments:</b> champions (recent, frequent, high) get early access; at-risk (previously frequent, not recent) get reactivation; new (recent, infrequent) get onboarding and second-purchase nudges; lapsed get a win-back with a reason to return, not just a discount.</p>"},
+{c:"growth",t:"Second Purchase Rate",h:"The most predictive number almost nobody tracks.",
+ p:"Why is the first-to-second purchase conversion a better health metric than overall repeat rate?",
+ b:"<p>The largest single drop-off in any ecommerce base is between the first and second order. Customers who reach a second purchase are dramatically more likely to reach a fifth.</p><p><b>Why overall repeat rate misleads:</b> it is dominated by a loyal minority and masks the leak at the first step.</p><p><b>Lever:</b> the window immediately after first delivery — when product satisfaction is highest — is the cheapest place to buy a second order.</p>"},
+
+/* ---------- copy & creative ---------- */
+{c:"copy",t:"Specificity Beats Superlatives",h:"'Best' is noise. '11 minutes' is evidence.",
+ p:"Rewrite three generic claims as specific ones. What makes specificity credible rather than merely detailed?",
+ b:"<p>Concrete numbers, names and details are processed as evidence; superlatives are processed as advertising and discounted automatically.</p><p><b>Mechanism:</b> specificity implies the claim was measured, which implies it could be falsified, which implies honesty.</p><p><b>Example:</b> 'fast delivery' versus 'ordered by 4pm, there by Tuesday'. The second is also easier to act on.</p>"},
+{c:"copy",t:"The First Three Seconds",h:"Your ad is competing with a thumb, not with other ads.",
+ p:"List five hook structures that don't rely on shock. Which suits a considered purchase?",
+ b:"<p>In feed environments, the opening frames determine whether anything else is seen. Attention is the scarce input, not reach.</p><p><b>Structures:</b> the specific question ('why does your cake dry out by day two?'), the visual anomaly, the stated objection, the mid-action open, the direct address to a named segment.</p><p><b>For considered purchases:</b> the stated objection works hardest — it self-selects people already weighing the decision.</p>"},
+{c:"copy",t:"Features, Benefits, Outcomes",h:"Nobody wants a drill, a hole, or even a shelf.",
+ p:"Take one product feature up the ladder to the emotional outcome. Where do most brands stop?",
+ b:"<p>Feature (what it is) → benefit (what it does) → outcome (what changes for them) → identity (who they become).</p><p><b>Example:</b> 48-hour shelf life → stays fresh for the whole weekend → you're not rushing to serve it → you host without anxiety.</p><p><b>Where most stop:</b> at benefit, because it is defensible and factual. The outcome is where the decision is actually made.</p>"},
+{c:"copy",t:"Voice of Customer Mining",h:"Your best copy is already written, in your reviews.",
+ p:"Where would you mine language for a new category, and what are you looking for specifically?",
+ b:"<p>Customers describe problems in language that converts better than anything written internally, because it matches how prospects already phrase the problem to themselves.</p><p><b>Sources:</b> your own reviews and support tickets, competitor 3-star reviews (most diagnostic), Reddit threads, post-purchase survey free text, sales call recordings.</p><p><b>Looking for:</b> the exact words for the problem, the objection, and the moment of realisation — especially unglamorous or idiosyncratic phrasing.</p>"},
+{c:"copy",t:"UGC & Creator Creative",h:"It works because it doesn't look like it was bought.",
+ p:"Why does polished UGC underperform rough UGC, and when does that reverse?",
+ b:"<p>Native-looking content from real users benefits from both social proof and lower advertising resistance — it is processed as content rather than as an ad.</p><p><b>Why polish hurts:</b> production value signals 'advertisement', which re-engages scepticism and removes the authenticity premium.</p><p><b>When it reverses:</b> high-consideration, high-price, or trust-dependent categories — financial services, luxury, medical — where polish signals legitimacy and rough signals risk.</p>"},
+{c:"copy",t:"One Reader, One Idea",h:"An ad that addresses everyone persuades nobody.",
+ p:"Why does narrowing the addressee of a message often increase total response?",
+ b:"<p>A message written for a specific person is more vivid, more concrete, and easier for adjacent people to self-select into. Generic messages are vivid to nobody.</p><p><b>Mechanism:</b> readers do the generalising themselves. Specificity provides the texture that makes them recognise the situation.</p><p><b>Test:</b> if you can't name the one person the ad is for, the ad is probably describing the product rather than their situation.</p>"},
+{c:"copy",t:"Direct Response vs Brand",h:"Different jobs, different metrics, different timescales.",
+ p:"When is it legitimate to run creative that produces no measurable conversion?",
+ b:"<p>Direct response asks for an action now and is measured in days. Brand builds memory structures and is measured in quarters or years.</p><p><b>The conflict:</b> judging brand creative on direct-response metrics will always kill it, because its effect appears as cheaper response <i>later</i>, attributed to other channels.</p><p><b>Legitimate when:</b> you have a measurement approach — ESOV tracking, brand surveys, MMM, geo tests — that can see effects a click cannot.</p>"},
+
+/* ---------- pricing ---------- */
+{c:"price",t:"Charm Pricing",h:"₹499 and ₹500 are one rupee and one category apart.",
+ p:"When does .99 pricing help, and when does it actively damage the brand?",
+ b:"<p>Left-digit bias: the leading digit disproportionately anchors perceived magnitude, so 499 reads as 'four hundred something'.</p><p><b>Helps:</b> value-led, promotional, high-comparison categories.</p><p><b>Hurts:</b> premium and luxury, where round numbers signal confidence and charm pricing signals discounting. Rounded prices are also processed more fluently, which suits emotional purchases.</p>"},
+{c:"price",t:"Tier Anchoring",h:"The tier nobody buys still changes what everyone buys.",
+ p:"Design three tiers where the top one exists mainly to sell the middle one.",
+ b:"<p>A high-priced tier shifts the reference point, making the middle option read as reasonable rather than expensive.</p><p><b>Practical:</b> the top tier must be genuinely credible and buyable — an obviously absurd option damages trust instead of anchoring.</p><p><b>Reinforcement:</b> a 'most popular' label on the middle tier adds social proof to the anchoring effect; the combination usually outperforms either alone.</p>"},
+{c:"price",t:"Free Shipping Thresholds",h:"The threshold is a pricing lever disguised as logistics.",
+ p:"Current AOV is ₹1,900. Where do you set the free-shipping threshold, and what do you watch?",
+ b:"<p>A threshold slightly above current AOV pulls order value upward, because the shipping fee is felt as a loss while the extra item is felt as a gain.</p><p><b>Rule of thumb:</b> 15–25% above current AOV — roughly ₹2,200 here. Too high and it is ignored; too low and you subsidise orders that would have cleared anyway.</p><p><b>Watch:</b> margin per order, not AOV alone. Threshold-chasing often adds low-margin filler items.</p>"},
+{c:"price",t:"Discount Damage",h:"Every promotion teaches customers what to wait for.",
+ p:"A brand discounts every six weeks. Describe the three-year consequence.",
+ b:"<p>Repeated promotion trains the base to defer purchases to the next sale, shifting volume rather than creating it, and resetting the reference price downward.</p><p><b>Three-year path:</b> full-price sell-through declines; promotional depth must increase for the same lift; margin compresses; the brand's perceived value settles at the discounted price.</p><p><b>Alternatives:</b> bundles, gift-with-purchase, early access, and loyalty value — all add perceived value without resetting the reference price.</p>"},
+{c:"price",t:"Van Westendorp",h:"Four questions that map an acceptable price range.",
+ p:"Name the four questions and what the intersections tell you.",
+ b:"<p>Ask at what price the product would be: too cheap (quality doubted), a bargain, getting expensive, too expensive.</p><p><b>Reading it:</b> the intersection of 'too cheap' and 'expensive' gives a lower bound; 'cheap' and 'too expensive' gives an upper bound. The range between is the acceptable band.</p><p><b>Limitation:</b> it measures stated willingness to pay without competitive context or real budget constraint. Treat it as a starting range, not an answer.</p>"},
+
+/* ---------- data & attribution ---------- */
+{c:"data",t:"Attribution Models Lie Differently",h:"Each model is a theory about credit, not a measurement of truth.",
+ p:"Last-click, first-click, linear, data-driven. Which channel does each systematically flatter?",
+ b:"<p><b>Last-click</b> flatters closing channels — brand search, retargeting, email. <b>First-click</b> flatters discovery — paid social, display. <b>Linear</b> flatters channels appearing in long paths. <b>Data-driven</b> flatters whatever the model's training data over-represents.</p><p><b>The real point:</b> none measure incrementality. All redistribute credit for conversions that already happened, including those that needed no advertising at all.</p>"},
+{c:"data",t:"Dark Social",h:"The biggest channel is the one that reports nothing.",
+ p:"Why does 'Direct' grow as a share of traffic, and how do you measure what caused it?",
+ b:"<p>Sharing through messaging apps, email and in-app browsers strips referrer data, so genuinely referred traffic is recorded as direct. Privacy defaults have increased this steadily.</p><p><b>Consequence:</b> word-of-mouth and community effects are systematically invisible to analytics, so channels that generate them are chronically undervalued.</p><p><b>Measurement:</b> post-purchase 'how did you hear about us' surveys, which routinely attribute 20–40% to sources analytics shows as direct.</p>"},
+{c:"data",t:"Incrementality Testing",h:"The only question that matters: what would have happened anyway?",
+ p:"Describe three ways to measure incrementality, ordered by rigour.",
+ b:"<p><b>Geo holdouts</b> — suppress spend in matched regions, compare total sales. Most rigorous, no tracking needed. <b>Platform conversion lift</b> — randomised holdout within the platform; convenient but graded by the party being examined. <b>Switchback tests</b> — alternate on/off periods; useful where geo splits aren't viable.</p><p><b>Why it matters:</b> the commonest finding is that branded search and retargeting have far lower incrementality than attributed ROAS implies.</p>"},
+{c:"data",t:"Vanity vs Decision Metrics",h:"If the number can only go up, it isn't telling you anything.",
+ p:"Give three pairs: a vanity metric and the decision metric that should replace it.",
+ b:"<p>A useful metric changes a decision. Cumulative totals almost never do, because they can only rise.</p><p><b>Pairs:</b> total users → weekly retained cohort; impressions → reach at effective frequency; total revenue → contribution margin after acquisition cost; followers → engaged audience per post.</p><p><b>Test:</b> ask what you would do differently if the number halved. No answer means it isn't a metric, it's a mood.</p>"},
+{c:"data",t:"Novelty Effect in Tests",h:"The first week of an A/B test is often a lie.",
+ p:"A variant wins by 18% in week one and is flat by week four. What happened, and what should you have done?",
+ b:"<p>Returning users respond to change itself, not to the change's merit. The novelty inflates early results and decays as the new state becomes familiar.</p><p><b>What to do:</b> run at least one full purchase cycle; segment new versus returning users, since new users are unaffected by novelty; pre-register the test duration so you cannot stop at a flattering moment.</p>"},
+{c:"data",t:"Peeking & Significance",h:"Checking the test every day is how you get a false positive.",
+ p:"Why does stopping a test as soon as it hits 95% inflate your error rate?",
+ b:"<p>Classical significance assumes a fixed sample decided in advance. Repeatedly testing the same data and stopping at the first significant result pushes the real false-positive rate well above 5% — often past 20%.</p><p><b>Fixes:</b> fix the sample size up front; or use sequential testing methods designed for continuous monitoring.</p><p><b>Also:</b> most ecommerce tests are underpowered. Detecting a 2% lift reliably needs far more traffic than teams assume.</p>"},
+{c:"data",t:"Marketing Mix Modelling",h:"The old method that privacy loss brought back.",
+ p:"Why is MMM returning, and what can it do that user-level attribution cannot?",
+ b:"<p>MMM regresses aggregate sales against spend, seasonality, price, distribution and external factors. It never touches individual-level data, so signal loss doesn't degrade it.</p><p><b>Advantages:</b> captures offline media, brand effects, long lags, and channels analytics cannot see.</p><p><b>Costs:</b> needs 2–3 years of history, substantial spend variation to learn from, and gives directional budget guidance rather than campaign-level decisions.</p>"},
+
+/* ---------- campaigns & stories ---------- */
+{c:"story",t:"Dollar Shave Club",h:"$4,500 of video, 12,000 orders in 48 hours.",
+ p:"What made this work beyond the humour? Why has it proved so hard to copy?",
+ b:"<p>The 2012 launch video drew 12,000 orders within two days and seeded a brand later sold to Unilever for $1bn.</p><p><b>Beyond humour:</b> it named a specific, widely-felt grievance — razor prices and the absurd theatre around them — and positioned the product as the obvious answer. The comedy carried a genuine value argument.</p><p><b>Why copies fail:</b> they imitate the tone without an underlying category grievance. Humour amplifies a point; it cannot substitute for one.</p>"},
+{c:"story",t:"Spotify Wrapped",h:"The customer does the advertising, and thanks you for the chance.",
+ p:"Decompose Wrapped into its mechanics. What preconditions does a brand need to run something like it?",
+ b:"<p>Annual personalised data summaries, designed for sharing, released simultaneously to create a cultural moment.</p><p><b>Mechanics:</b> personal data as identity expression; social comparison; designed-for-screenshot formats; scarcity through timing; implicit status display.</p><p><b>Preconditions:</b> you need data the user finds self-revealing, and the output must flatter them. Most brands have usage data that is merely operational — and nobody shares their energy bill.</p>"},
+{c:"story",t:"Airbnb × Craigslist",h:"Growth hacking's founding myth, and what it actually teaches.",
+ p:"What is the transferable lesson, given that the specific tactic is long dead?",
+ b:"<p>Airbnb built an unofficial integration letting hosts cross-post listings to Craigslist, borrowing an existing marketplace's demand to solve cold-start supply.</p><p><b>Transferable lesson:</b> find where your audience already congregates in volume and build a bridge, rather than constructing an audience from zero.</p><p><b>Modern equivalents:</b> marketplace arbitrage, platform-native tools, integrations with incumbents. The channel changes; borrowing distribution does not.</p>"},
+{c:"story",t:"Oatly's Anti-Advertising",h:"An ad that admits it is an ad, written badly on purpose.",
+ p:"Why does deliberate amateurism build trust in some categories and destroy it in others?",
+ b:"<p>Oatly ran packaging and ads in conversational, self-deprecating copy that openly acknowledged being marketing — including a full-page ad reading 'this is an ad for Oatly'.</p><p><b>Why it worked:</b> in a category of earnest health claims, transparency about the commercial motive was itself differentiating and read as honesty.</p><p><b>Where it fails:</b> categories where competence is the purchase criterion. Nobody wants a self-deprecating anaesthetist.</p>"},
+{c:"story",t:"Patagonia: Don't Buy This Jacket",h:"Telling people not to buy, and selling more.",
+ p:"Why didn't this reduce sales? What makes anti-consumption marketing credible rather than cynical?",
+ b:"<p>A 2011 Black Friday full-page ad in the New York Times urged readers not to buy the jacket pictured, detailing its environmental cost.</p><p><b>Why sales rose:</b> it was a costly signal. Only a brand genuinely confident in durability and values could afford it, which made every other sustainability claim credible by association.</p><p><b>Credibility test:</b> the message must be expensive and verifiable. Patagonia also ran repair programmes and resale — the ad reported a position it already held.</p>"},
+{c:"story",t:"Duolingo on TikTok",h:"A giant green owl behaving badly built a brand channel from nothing.",
+ p:"What organisational conditions made this possible, and why can most brands not replicate them?",
+ b:"<p>Duolingo's mascot became an unhinged TikTok personality, reaching millions of followers with content bearing almost no resemblance to conventional brand communication.</p><p><b>Conditions:</b> a small team with genuine autonomy, permission to publish without layered approval, and tolerance for content that would fail any pre-test.</p><p><b>Why others can't:</b> the obstacle is rarely creative. It is approval chains, which reliably remove the specificity that made it work.</p>"},
+{c:"story",t:"Burger King: Whopper Detour",h:"Buy a burger for a penny — but only inside a competitor's restaurant.",
+ p:"What made the geofencing gimmick strategically sound rather than merely clever?",
+ b:"<p>The app offered a 1-cent Whopper, redeemable only within 600 feet of a McDonald's. It drove around 1.5 million app downloads and moved BK to the top of the App Store.</p><p><b>Why it was sound:</b> the stunt solved a real business problem — app adoption — rather than just generating coverage. The mechanic forced the download, the download enabled ongoing direct marketing.</p><p><b>Transferable:</b> the best stunts have a durable asset on the other side of the laugh.</p>"},
+{c:"story",t:"Liquid Death",h:"Canned water with a death metal brand, valued at $1.4bn.",
+ p:"Explain how branding alone created pricing power in the most commoditised category imaginable.",
+ b:"<p>Water sold in tallboy cans with heavy-metal aesthetics and the tagline 'murder your thirst' — targeting people who want a non-alcoholic drink without looking like they are abstaining.</p><p><b>The real insight:</b> the job to be done was social, not hydration. Holding a can at a party signals participation.</p><p><b>Lesson:</b> commodity categories are where branding has the <i>most</i> leverage, because there is no functional difference to argue about.</p>"},
+{c:"story",t:"Cadbury Gorilla",h:"90 seconds of a gorilla drumming. No product, no claim.",
+ p:"How would you justify this in a pitch today, and what metrics would you use to defend it?",
+ b:"<p>The 2007 ad showed a gorilla playing Phil Collins' drum fill, with no product demonstration or benefit claim. Sales rose around 9% and the brand recovered from a damaging recall.</p><p><b>Mechanism:</b> pure emotional priming and distinctive-asset building. It created a strong positive memory structure linked to the brand's colour and name.</p><p><b>Defending it:</b> brand tracking, ESOV, and long-term sales modelling — never click-through. This creative would die in any performance-led approval process.</p>"},
+{c:"story",t:"Dove Real Beauty Sketches",h:"A forensic artist, two descriptions, one uncomfortable comparison.",
+ p:"Why did this spread so far, and what is the recurring criticism of purpose-led work like it?",
+ b:"<p>A forensic artist sketched women from their own descriptions, then from strangers' — the strangers' versions were consistently more flattering. It became one of the most-watched ads ever made.</p><p><b>Why it spread:</b> it dramatised an insight people recognised in themselves, in a format that invited sharing as self-expression rather than endorsement.</p><p><b>The criticism:</b> purpose work is credible only when the parent business reflects it. Critics noted the same parent company's other brands marketed skin-lightening products.</p>"}
+];
+
+/* ---------- state ---------- */
+var LS="swipefile.v1";
+function load(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}}
+function save(s){try{localStorage.setItem(LS,JSON.stringify(s))}catch(e){}}
+var st=load();
+var mode=st.mode==="deep"?"deep":"quick";
+var cat=st.cat||"all";
+var timerLen=[30,60,90,120].indexOf(st.timerLen)>-1?st.timerLen:60;
+var theme=["system","light","dark"].indexOf(st.theme)>-1?st.theme:"system";
+var seen=Array.isArray(st.seen)?st.seen:[];
+var cur=null, revealed=false, tid=null, tleft=0;
+
+var $=function(id){return document.getElementById(id)};
+
+/* ---------- theme ---------- */
+function applyTheme(){
+  var r=document.documentElement;
+  if(theme==="system"){r.removeAttribute("data-theme")}else{r.setAttribute("data-theme",theme)}
+  Array.prototype.forEach.call($("themeChips").children,function(b){
+    b.setAttribute("aria-pressed",String(b.dataset.t===theme));});
+}
+
+/* ---------- category select ---------- */
+(function(){
+  var sel=$("cat"), counts={};
+  D.forEach(function(x){counts[x.c]=(counts[x.c]||0)+1});
+  var o=document.createElement("option");
+  o.value="all"; o.textContent="✦ Everything ("+D.length+")"; sel.appendChild(o);
+  Object.keys(CATS).forEach(function(k){
+    if(!counts[k])return;
+    var op=document.createElement("option");
+    op.value=k; op.textContent=CATS[k]+" ("+counts[k]+")"; sel.appendChild(op);
+  });
+  sel.value=cat;
+  $("statTotal").textContent=String(D.length);
+})();
+
+function pool(){return D.filter(function(x){return cat==="all"||x.c===cat})}
+function keyOf(x){return x.c+"|"+x.t}
+
+/* ---------- drawing ---------- */
+function spin(){
+  var p=pool();
+  if(!p.length)return;
+  var fresh=p.filter(function(x){return seen.indexOf(keyOf(x))===-1});
+  if(!fresh.length){ seen=seen.filter(function(k){return p.map(keyOf).indexOf(k)===-1}); fresh=p.slice(); }
+  if(fresh.length>1&&cur){fresh=fresh.filter(function(x){return keyOf(x)!==keyOf(cur)})||fresh}
+  var pick=fresh[Math.floor(Math.random()*fresh.length)];
+  cur=pick; revealed=false;
+  if(seen.indexOf(keyOf(pick))===-1)seen.push(keyOf(pick));
+  persist(); render();
+  stopTimer();
+}
+
+function render(){
+  var eb=$("eyebrow"),hl=$("headline"),hk=$("hook");
+  if(!cur){
+    eb.textContent="Press spin to start";
+    hl.textContent="Swipe File";
+    hk.textContent="A deck of "+D.length+" ideas from consumer psychology, brand strategy, paid media and growth. Draw one. Explain it. Check yourself.";
+    $("promptPanel").hidden=true; $("briefPanel").hidden=true;
+    $("timer").disabled=true;
+    return;
+  }
+  eb.textContent=CATS[cur.c].replace(/^[^\s]+\s/,"");
+  hl.textContent=cur.t;
+  hk.textContent=cur.h;
+  $("timer").disabled=false;
+  $("briefTag").textContent=CATS[cur.c].replace(/^[^\s]+\s/,"");
+
+  if(mode==="deep"){
+    $("promptPanel").hidden=true;
+    $("briefPanel").hidden=false;
+    $("briefText").innerHTML=cur.b+"<p style='color:var(--faint);font-family:var(--f-m);font-size:12px;margin-top:14px'>Try it anyway: "+esc(cur.p)+"</p>";
+  }else{
+    $("promptPanel").hidden=false;
+    $("promptText").textContent=cur.p;
+    $("briefPanel").hidden=!revealed;
+    if(revealed)$("briefText").innerHTML=cur.b;
+    $("revealBtn").hidden=revealed;
+    $("revealBtn").textContent="Reveal the brief";
+  }
+  var p=pool(), s=p.filter(function(x){return seen.indexOf(keyOf(x))>-1}).length;
+  $("statSeen").textContent=String(s);
+  $("statTotal").textContent=String(p.length);
+}
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+function reveal(){
+  if(mode!=="quick"||!cur||revealed)return;
+  revealed=true; render();
+  $("briefPanel").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function persist(){
+  save({mode:mode,cat:cat,timerLen:timerLen,theme:theme,seen:seen.slice(-400)});
+}
+
+/* ---------- timer ---------- */
+function fmt(n){var m=Math.floor(n/60),s=n%60;return m+":"+(s<10?"0":"")+s}
+function stopTimer(){
+  if(tid){clearInterval(tid);tid=null}
+  var b=$("timer");
+  b.classList.remove("timer-live");
+  b.textContent="Start "+(timerLen>=60?(timerLen/60)+(timerLen===60?" min":" min"):timerLen+"s");
+  if(timerLen<60)b.textContent="Start "+timerLen+"s";
+}
+function toggleTimer(){
+  if(tid){stopTimer();return}
+  tleft=timerLen;
+  var b=$("timer"); b.classList.add("timer-live"); b.textContent=fmt(tleft);
+  tid=setInterval(function(){
+    tleft--;
+    if(tleft<=0){stopTimer();b.textContent="Time";setTimeout(stopTimer,1600);return}
+    b.textContent=fmt(tleft);
+  },1000);
+}
+
+/* ---------- mode ---------- */
+function setMode(m){
+  mode=m; revealed=false;
+  $("mQuick").setAttribute("aria-checked",String(m==="quick"));
+  $("mDeep").setAttribute("aria-checked",String(m==="deep"));
+  $("modeNote").textContent = m==="quick"
+    ? "Explain it out loud before you read the answer."
+    : "Read the brief, then build an example from your own accounts.";
+  persist(); render();
+}
+
+/* ---------- wiring ---------- */
+$("mQuick").addEventListener("click",function(){setMode("quick")});
+$("mDeep").addEventListener("click",function(){setMode("deep")});
+$("cat").addEventListener("change",function(e){cat=e.target.value;persist();render()});
+$("spin").addEventListener("click",spin);
+$("revealBtn").addEventListener("click",reveal);
+$("timer").addEventListener("click",toggleTimer);
+$("openSettings").addEventListener("click",function(){$("settings").showModal()});
+$("closeSettings").addEventListener("click",function(){$("settings").close()});
+$("resetSeen").addEventListener("click",function(){seen=[];persist();render();$("settings").close()});
+Array.prototype.forEach.call($("timerChips").children,function(b){
+  b.addEventListener("click",function(){
+    timerLen=parseInt(b.dataset.s,10);
+    Array.prototype.forEach.call($("timerChips").children,function(x){
+      x.setAttribute("aria-pressed",String(x===b))});
+    persist(); stopTimer();
+  });
+  if(parseInt(b.dataset.s,10)===timerLen)b.setAttribute("aria-pressed","true");
+  else b.setAttribute("aria-pressed","false");
+});
+Array.prototype.forEach.call($("themeChips").children,function(b){
+  b.addEventListener("click",function(){theme=b.dataset.t;persist();applyTheme()});
+});
+document.addEventListener("keydown",function(e){
+  if(e.target.matches("input,select,textarea"))return;
+  if($("settings").open)return;
+  if(e.code==="Space"){e.preventDefault();spin()}
+  else if(e.key==="r"||e.key==="R"){reveal()}
+});
+
+applyTheme(); setMode(mode); stopTimer(); render();
+})();
+</script>
+</body>
+</html>
