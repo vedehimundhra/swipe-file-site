@@ -41,15 +41,15 @@ img{max-width:100%}
   --hot:#FF5833; --hot-ink:#1A0C07; --hot-soft:#38170E;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
-body{
+html{min-height:100%}
+body{min-height:100%;
   margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--f-b);font-size:16px;line-height:1.6;
   -webkit-font-smoothing:antialiased;
   background-image:radial-gradient(var(--rule) .5px,transparent .5px);
   background-size:14px 14px;
 }
-.shell{min-height:100%;display:flex;flex-direction:column;
+.shell{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
   max-width:760px;margin:0 auto;padding-inline:var(--pad)}
 
 /* masthead */
@@ -85,13 +85,14 @@ select:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
   transform:translateY(-70%) rotate(45deg);pointer-events:none}
 
 /* stage */
-main{flex:1;display:flex;flex-direction:column;justify-content:center;
-  padding-block:clamp(10px,3vw,24px);min-height:0}
+main{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;
+  padding-block:clamp(14px,3vw,26px)}
 .eyebrow{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.17em;
   text-transform:uppercase;color:var(--hot);text-align:center;margin:0 0 12px;
   min-height:1.2em}
-.headline{font-family:var(--f-d);font-weight:800;letter-spacing:-.04em;line-height:.96;
-  font-size:clamp(38px,11vw,78px);margin:0;text-align:center;text-wrap:balance}
+.headline{font-family:var(--f-d);font-weight:800;letter-spacing:-.035em;line-height:1.02;
+  font-size:clamp(31px,7.4vw,60px);margin:0;text-align:center;text-wrap:balance;
+  overflow-wrap:break-word;hyphens:auto}
 .hook{font-family:var(--f-b);font-style:italic;font-size:clamp(16px,2.6vw,20px);
   color:var(--ink-2);text-align:center;margin:16px auto 0;max-width:44ch;text-wrap:balance}
 
@@ -114,8 +115,9 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;
   border-radius:3px;padding:1px 5px;color:var(--faint)}
 
 /* dock */
-.dock{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 62%,transparent);
-  padding-top:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+.dock{position:sticky;bottom:0;z-index:5;
+  background:linear-gradient(to top,var(--paper) 55%,color-mix(in srgb,var(--paper) 88%,transparent) 80%,transparent);
+  padding-top:26px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));margin-top:12px;
   display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap}
 .btn{appearance:none;border:1px solid var(--rule-2);background:var(--card);color:var(--ink);
   font-family:var(--f-d);font-weight:700;font-size:14.5px;padding:12px 22px;
