@@ -86,7 +86,7 @@ select:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 
 /* stage */
 main{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;
-  padding-block:clamp(14px,3vw,26px)}
+  padding-top:clamp(14px,3vw,26px);padding-bottom:clamp(76px,13vw,104px)}
 .eyebrow{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.17em;
   text-transform:uppercase;color:var(--hot);text-align:center;margin:0 0 12px;
   min-height:1.2em}
@@ -164,6 +164,17 @@ dialog::backdrop{background:rgba(10,9,6,.58)}
 footer{text-align:center;padding-bottom:22px;font-family:var(--f-m);font-size:10.5px;
   letter-spacing:.09em;color:var(--faint)}
 
+/* motion */
+@keyframes settle{0%{transform:translateY(-7px) scale(.985);opacity:.55}
+  60%{transform:translateY(1px) scale(1.004)}100%{transform:none;opacity:1}}
+@keyframes riseIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.42}}
+.anim .headline.is-settling{animation:settle .34s cubic-bezier(.2,.9,.3,1)}
+.anim .headline.is-spinning{opacity:.62}
+.anim .hook.is-in,.anim .panel.is-in,.anim .reveal-btn.is-in{animation:riseIn .3s ease-out both}
+.anim .panel.is-in{animation-delay:.04s}
+.anim .eyebrow.is-in{animation:riseIn .26s ease-out both}
+.timer-live.is-low{animation:blink 1s steps(1,end) infinite;color:var(--hot)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -240,9 +251,23 @@ footer{text-align:center;padding-bottom:22px;font-family:var(--f-m);font-size:10
       </div>
     </div>
     <div class="field">
+      <span class="field-l">Sound</span>
+      <div class="chips" id="soundChips">
+        <button class="chip" type="button" data-v="off" aria-pressed="true">Off</button>
+        <button class="chip" type="button" data-v="on">On</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field-l">Motion</span>
+      <div class="chips" id="motionChips">
+        <button class="chip" type="button" data-v="on" aria-pressed="true">Spin animation</button>
+        <button class="chip" type="button" data-v="off">Instant</button>
+      </div>
+    </div>
+    <div class="field">
       <span class="field-l">Deck</span>
       <div class="chips">
-        <button class="chip" type="button" id="resetSeen">Reshuffle all 72</button>
+        <button class="chip" type="button" id="resetSeen">Reshuffle the deck</button>
       </div>
     </div>
   </div>
@@ -521,9 +546,43 @@ var cat=st.cat||"all";
 var timerLen=[30,60,90,120].indexOf(st.timerLen)>-1?st.timerLen:60;
 var theme=["system","light","dark"].indexOf(st.theme)>-1?st.theme:"system";
 var seen=Array.isArray(st.seen)?st.seen:[];
-var cur=null, revealed=false, tid=null, tleft=0;
+var soundOn=st.sound===true;
+var motionOn=st.motion!==false;
+var cur=null, revealed=false, tid=null, tleft=0, spinning=false;
 
 var $=function(id){return document.getElementById(id)};
+var REDUCED=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- sound: synthesised, no files ---------- */
+var actx=null;
+function ac(){
+  if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){actx=null}}
+  if(actx&&actx.state==="suspended"){try{actx.resume()}catch(e){}}
+  return actx;
+}
+function tone(freq,dur,type,vol,delay){
+  if(!soundOn)return;
+  var a=ac(); if(!a)return;
+  var t0=a.currentTime+(delay||0);
+  var o=a.createOscillator(), g=a.createGain();
+  o.type=type||"sine"; o.frequency.setValueAtTime(freq,t0);
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(vol||0.05,t0+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(g); g.connect(a.destination);
+  o.start(t0); o.stop(t0+dur+0.03);
+}
+var SFX={
+  tick:function(){tone(1180,0.022,"square",0.022)},
+  settle:function(){tone(300,0.14,"triangle",0.07);tone(150,0.2,"sine",0.05,0.01)},
+  reveal:function(){tone(523.25,0.1,"sine",0.05);tone(783.99,0.16,"sine",0.045,0.075)},
+  done:function(){tone(659.25,0.17,"sine",0.06);tone(880,0.26,"sine",0.055,0.14)}
+};
+
+function anim(el,cls){
+  if(!motionOn||REDUCED||!el)return;
+  el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+}
 
 /* ---------- theme ---------- */
 function applyTheme(){
@@ -553,16 +612,51 @@ function keyOf(x){return x.c+"|"+x.t}
 
 /* ---------- drawing ---------- */
 function spin(){
+  if(spinning)return;
   var p=pool();
   if(!p.length)return;
   var fresh=p.filter(function(x){return seen.indexOf(keyOf(x))===-1});
   if(!fresh.length){ seen=seen.filter(function(k){return p.map(keyOf).indexOf(k)===-1}); fresh=p.slice(); }
-  if(fresh.length>1&&cur){fresh=fresh.filter(function(x){return keyOf(x)!==keyOf(cur)})||fresh}
+  if(fresh.length>1&&cur){
+    var f2=fresh.filter(function(x){return keyOf(x)!==keyOf(cur)});
+    if(f2.length)fresh=f2;
+  }
   var pick=fresh[Math.floor(Math.random()*fresh.length)];
+  stopTimer();
+
+  if(!motionOn||REDUCED||p.length<3){ commit(pick); return; }
+
+  // decelerating shuffle through real titles, then land
+  spinning=true;
+  $("spin").disabled=true;
+  var hl=$("headline");
+  hl.classList.add("is-spinning");
+  $("promptPanel").hidden=true; $("briefPanel").hidden=true;
+  $("eyebrow").textContent="shuffling";
+  var names=p.map(function(x){return x.t}), i=0, total=10;
+  (function step(){
+    hl.textContent=names[Math.floor(Math.random()*names.length)];
+    SFX.tick();
+    i++;
+    if(i<total){ setTimeout(step, 42+Math.pow(i,2.1)*2.3); }
+    else{
+      hl.classList.remove("is-spinning");
+      spinning=false; $("spin").disabled=false;
+      commit(pick); SFX.settle();
+      anim(hl,"is-settling");
+    }
+  })();
+}
+
+function commit(pick){
   cur=pick; revealed=false;
   if(seen.indexOf(keyOf(pick))===-1)seen.push(keyOf(pick));
   persist(); render();
-  stopTimer();
+  anim($("eyebrow"),"is-in"); anim($("hook"),"is-in");
+  var pp=$("promptPanel"); if(pp&&!pp.hidden){
+    anim(pp.querySelector(".panel"),"is-in"); anim($("revealBtn"),"is-in");
+  }
+  var bp=$("briefPanel"); if(bp&&!bp.hidden)anim(bp,"is-in");
 }
 
 function render(){
@@ -600,13 +694,15 @@ function render(){
 function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
 
 function reveal(){
-  if(mode!=="quick"||!cur||revealed)return;
+  if(mode!=="quick"||!cur||revealed||spinning)return;
   revealed=true; render();
-  $("briefPanel").scrollIntoView({behavior:"smooth",block:"nearest"});
+  SFX.reveal(); anim($("briefPanel"),"is-in");
+  $("briefPanel").scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"nearest"});
 }
 
 function persist(){
-  save({mode:mode,cat:cat,timerLen:timerLen,theme:theme,seen:seen.slice(-400)});
+  save({mode:mode,cat:cat,timerLen:timerLen,theme:theme,
+        sound:soundOn,motion:motionOn,seen:seen.slice(-400)});
 }
 
 /* ---------- timer ---------- */
@@ -614,17 +710,24 @@ function fmt(n){var m=Math.floor(n/60),s=n%60;return m+":"+(s<10?"0":"")+s}
 function stopTimer(){
   if(tid){clearInterval(tid);tid=null}
   var b=$("timer");
-  b.classList.remove("timer-live");
-  b.textContent="Start "+(timerLen>=60?(timerLen/60)+(timerLen===60?" min":" min"):timerLen+"s");
-  if(timerLen<60)b.textContent="Start "+timerLen+"s";
+  b.classList.remove("timer-live","is-low");
+  b.textContent = timerLen<60 ? "Start "+timerLen+"s" : "Start "+(timerLen/60)+" min";
 }
 function toggleTimer(){
   if(tid){stopTimer();return}
+  ac();
   tleft=timerLen;
   var b=$("timer"); b.classList.add("timer-live"); b.textContent=fmt(tleft);
   tid=setInterval(function(){
     tleft--;
-    if(tleft<=0){stopTimer();b.textContent="Time";setTimeout(stopTimer,1600);return}
+    if(tleft<=0){
+      clearInterval(tid);tid=null;
+      b.classList.remove("is-low"); b.textContent="Time";
+      SFX.done();
+      setTimeout(stopTimer,1800);
+      return;
+    }
+    if(tleft<=5)b.classList.add("is-low");
     b.textContent=fmt(tleft);
   },1000);
 }
@@ -663,6 +766,25 @@ Array.prototype.forEach.call($("timerChips").children,function(b){
 Array.prototype.forEach.call($("themeChips").children,function(b){
   b.addEventListener("click",function(){theme=b.dataset.t;persist();applyTheme()});
 });
+Array.prototype.forEach.call($("soundChips").children,function(b){
+  b.addEventListener("click",function(){
+    soundOn=b.dataset.v==="on";
+    Array.prototype.forEach.call($("soundChips").children,function(x){
+      x.setAttribute("aria-pressed",String(x===b))});
+    persist(); if(soundOn){ac();SFX.settle()}
+  });
+  b.setAttribute("aria-pressed",String((b.dataset.v==="on")===soundOn));
+});
+Array.prototype.forEach.call($("motionChips").children,function(b){
+  b.addEventListener("click",function(){
+    motionOn=b.dataset.v==="on";
+    Array.prototype.forEach.call($("motionChips").children,function(x){
+      x.setAttribute("aria-pressed",String(x===b))});
+    document.body.classList.toggle("anim",motionOn&&!REDUCED);
+    persist();
+  });
+  b.setAttribute("aria-pressed",String((b.dataset.v==="on")===motionOn));
+});
 document.addEventListener("keydown",function(e){
   if(e.target.matches("input,select,textarea"))return;
   if($("settings").open)return;
@@ -670,6 +792,7 @@ document.addEventListener("keydown",function(e){
   else if(e.key==="r"||e.key==="R"){reveal()}
 });
 
+document.body.classList.toggle("anim",motionOn&&!REDUCED);
 applyTheme(); setMode(mode); stopTimer(); render();
 })();
 </script>
